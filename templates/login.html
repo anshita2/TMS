@@ -1,25 +1,273 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="icon" href="{% static 'img_logo.png' %}" type="image/x-icon">
+    <style>
+      * {
+          margin: 0;
+          padding: 0;
+      }
+
+      body {
+          position: relative;
+          background-color: black;
+          /* Remove direct background image here */
+          font-family: Poppins-Regular, sans-serif;
+      }
+
+      body::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: url("{% static 'back.jpg' %}") no-repeat;
+          object-fit: cover;
+          opacity: 0.5;
+          z-index: -1;
+      }
+
+      .fade-in {
+          animation: fadeIn 0.5s ease-in-out;
+          overflow-y:hidden;
+          /* Reduced duration */
+      }
+
+      @keyframes fadeIn {
+          from {
+              opacity: 0;
+          }
+
+          to {
+              opacity: 1;
+          }
+      }
+
+      .slide-up {
+          animation: slideUp 1s ease-out;
+          /* Slide-up effect for elements */
+      }
+
+      @keyframes slideUp {
+          from {
+              transform: translateY(20px);
+              opacity: 0;
+          }
+
+          to {
+              transform: translateY(0);
+              opacity: 1;
+          }
+      }
+
+      .content,
+      button {
+          opacity: 1;
+          animation: slideUp 1s ease-out;
+      }
+
+      .container {
+          display: flex;
+          justify-content: right;
+          align-items: center;
+      }
+
+      .form {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transform-style: preserve-3d;
+          transition: all 1s ease;
+      }
+
+      .form_details {
+          font-size: 25px;
+          font-weight: 600;
+          padding-bottom: 10px;
+          color: black;
+      }
+
+      .input {
+          width: 245px;
+          min-height: 45px;
+          color: #ffc70f;
+          outline: none;
+          transition: 0.35s;
+          padding: 0px 7px;
+          background-color: #0055a6;
+          border-radius: 6px;
+          border: 2px solid #212121;
+          box-shadow: 6px 6px 10px rgba(0, 0, 0, 1),
+              1px 1px 10px rgba(255, 255, 255, 0.6);
+      }
+
+      .input::placeholder {
+          color: white;
+      }
+
+      .input:focus.input::placeholder {
+          transition: 0.3s;
+          opacity: 0;
+      }
+
+      .input:focus {
+          transform: scale(1.05);
+          box-shadow: 6px 6px 10px rgba(0, 0, 0, 1),
+              1px 1px 10px rgba(255, 255, 255, 0.6),
+              inset 2px 2px 10px rgba(0, 0, 0, 1),
+              inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+      }
+
+      .btn {
+          padding: 10px 35px;
+          cursor: pointer;
+          background-color: #ffc70f;
+          border-radius: 6px;
+          border: 2px solid #212121;
+          box-shadow: 6px 6px 10px rgba(0, 0, 0, 1),
+              1px 1px 10px rgba(255, 255, 255, 0.6);
+          color: black;
+          font-size: 15px;
+          font-weight: bold;
+          transition: 0.35s;
+          margin: 0rem 0rem 0rem 4.5rem;
+      }
+
+      .btn:hover {
+          transform: scale(1.05);
+          background-color: #0055a6;
+          color: white;
+          box-shadow: 6px 6px 10px rgba(0, 0, 0, 1),
+              1px 1px 10px rgba(255, 255, 255, 0.6),
+              inset 2px 2px 10px rgba(0, 0, 0, 1),
+              inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+      }
+
+      .btn:focus {
+          transform: scale(1.05);
+          box-shadow: 6px 6px 10px rgba(0, 0, 0, 1),
+              1px 1px 10px rgba(255, 255, 255, 0.6),
+              inset 2px 2px 10px rgba(0, 0, 0, 1),
+              inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+      }
+
+      .form .switch {
+          font-size: 13px;
+          color: black;
+      }
+
+      .form .switch .signup_tog {
+          font-weight: 700;
+          cursor: pointer;
+          text-decoration: underline;
+      }
+
+      .container #signup_toggle {
+          display: none;
+      }
+
+      .iaa img{
+        width: 5rem;
+      }
+
+      .container #signup_toggle:checked+.form {
+          transform: rotateY(-180deg);
+      }
+
+      .welcomecontainer {
+          font-size: 15px;
+          display: flex;
+          flex-direction: column;
+          gap: 3px;
+          letter-spacing: 1px;
+      }
+
+      .welcomecontainer h1 {
+          color: white;
+      }
+
+      .welcomecontainer h2 {
+          color: #ffc70f;
+          font-size: 28px;
+          text-shadow: 0px 6px 25px black;
+      }
+
+      .welcomecontainer h3 {
+          font-size: 1.714em !important;
+          line-height: 1.45em;
+          color: white;
+          font-weight: 100;
+      }
+
+      .welcomecontainer p {
+          color: white;
+      }
+
+      .welcomecontainer h4 {
+          border-top: 1px solid rgb(179, 179, 179);
+          opacity: 0.6;
+          letter-spacing: 1px;
+          font-weight: 300;
+          color: #666;
+      }
+
+      .main-content{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 100vh;
+      }
+      .right-side{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: aliceblue;
+        border-radius: 10%;
+        padding: 2rem;
+        gap: 20px;
+      }
+
+      .left-side{
+        display: flex;
+        flex-direction: column;
+      }
+  </style>
 </head>
-<body>
-    <form method="post" action="/login">
-      {% csrf_token %}
-        <div class="form-group">
-          <label for="exampleInputname">Username</label>
-          <input type="text" name="name" class="form-control" id="exampleInputname" aria-describedby="emailHelp" placeholder="Enter username">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" name="password"class="form-control" id="exampleInputPassword1" placeholder="Password">
-        </div>
-        {% if error %}
-            <p style="color: red;">{{ error }}</p>
-        {% endif %}
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+<body class="fade-in">
+  <div class="main-content">
+    <div class="left-side">
+      <div class="iaa">
+        <img src="{% static 'iialogo-login.png' %}" class="slide-up">
+      </div>
+    <div class="welcomecontainer slide-up">
+        <h1>WELCOME TO</h1>
+        <h2>INDIAN AVIATION ACADEMY</h2><br>
+        <h3>Nurturing Aviation for the Future</h3>
+        <p>Indian Aviation Academy (IAA) is a premier institute for Education,<br>
+            Training, and Research in Aviation. It functions as joint training<br>
+            academy of Airports Authority of India (AAI),Bureau of Civil Aviation<br>
+            Security(BCAS) and Directorate General of Civil Aviation(DGCA).</p>
+    </div>
+    </div>
+    
+    <div class="right-side slide-up">
+            <div class="form_details">Login</div>
+                <form method="POST" action="/login">
+                    {% csrf_token %}
+                    <input placeholder="Username" class="input slide-up" type="text" name="name" required><br><br>
+                    <input placeholder="Password" class="input slide-up" type="password" name="password" required><br><br>
+                    <button type="submit" class="btn">Login</button>
+                    {% if error %}
+                    <p style="color: red;">{{ error }}</p>
+                    {% endif %}
+                </form>
+    </div>
+    </div>
+  </div>
 </body>
 </html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Venue</title>
+    <link rel="stylesheet" href="../static/infra.css">
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="sidebar">
+            <ul>
+                <li onclick="loadContent('manageVenue')"><a href="#">Manage Venue</a></li>
+                <li onclick="loadContent('addBooking')"><a href="#">Add Booking</a></li>
+                <li onclick="loadContent('viewBooking')"><a href="#">View Booking</a></li>
+                <li onclick="loadContent('cancelBooking')"><a href="#">Cancel Booking</a></li>
+            </ul>
+        </div>
+    
+        <div class="main-content-and-info">
+            <div id="main-content" class="main-content"></div>
+            <div class="event-info">
+            <h3>Today's Event</h3>
+            <p>No Booking for today</p>
+            <h3>Upcoming Events</h3>
+            <p>127 Amis ('14-01-2017')</p>
+            </div>
+        </div>
+        
+    </div>
+    <script src="../static/infra.js"></script>
+</body>
+</html>
