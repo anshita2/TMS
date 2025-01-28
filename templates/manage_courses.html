@@ -242,12 +242,12 @@
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
-						<h2>Manage <b>Trainee</b></h2>
+						<h2>Manage <b>Courses</b></h2>
 					</div>
 					<div class="col-sm-6">
-						<a href={%url 'export_excel_trainee' %} class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE2C4;</i> <span>Export as excel</span></a>
-						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Trainee</span></a>
-						{% comment %} <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>{% endcomment %}
+						<a href="{% url 'export_excel_courses' %}" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE2C4;</i> <span>Export as Excel</span></a>
+						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Course</span></a>
+						
 					</div>
                 </div>
             </div>
@@ -263,24 +263,28 @@
 					<thead>
 						<tr>
 							<th>Sno.</th>
-							<th>Name</th>
-							<th>Phone</th>
-							<th>Email</th>
-							<th>course enrolled</th>
-							<th>Domain</th>
-							<th>Actions</th>
+                            <th>Course Name</th>
+                            <th>Duration</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Venue Name</th>
+                            <th>Trainees Enrolled</th>
+                            <th>Faculty</th>
+                            <th>Actions</th>
 						</tr>
 					</thead>
 				</div>
-                <tbody class="trainee-table-body">
+                <tbody class="courses-table-body">
                     {%for i in page_obj%}
                     <tr>
-						<td>{{forloop.counter}}</td>
-                        <td>{{i.name}}</td>
-                        <td>{{i.phone}}</td>
-						<td>{{i.email}}</td>
-                        <td>{{i.course}}</td>
-                        <td>{{i.domain}}</td>
+                        <td>{{forloop.counter}}</td>
+						<td>{{i.name}}</td>
+                        <td>{{i.duration}}</td>
+                        <td>{{i.start_date}}</td>
+                        <td>{{i.end_date}}</td>
+                        <td>{{i.venue_name}}</td>
+                        <td>{{i.trainees_enrolled}}</td>
+                        <td>{{i.faculty}}</td>
                         <td>
                             <a href="#editEmployeeModal-{{i.id}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                             <a href="#deleteEmployeeModal-{{i.id}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -289,7 +293,7 @@
 					{% endfor %}
                 </tbody>
             </table>
-			<div id="no-results" style="display: none;">No trainees found.</div>
+			<div id="no-results" style="display: none;">No courses found.</div>
 			<div class="clearfix pagination-container">
                 <div class="hint-text">Showing page <b>{{page_obj.number}}</b> of <b>{{page_obj.paginator.num_pages}}</b></div>
 				<ul class="pagination">
@@ -335,33 +339,41 @@
 	<div id="addEmployeeModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form method="POST" action="{% url "add_trainee" %}">
+				<form method="POST" action="{% url "add_courses" %}">
 					{% csrf_token %}
 					<div class="modal-header">						
-						<h4 class="modal-title">Add Trainee</h4>
+						<h4 class="modal-title">Add Course</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					</div>
 					<div class="modal-body">					
-						<div class="form-group">
-							<label>Name</label>
-							<input type="text" class="form-control" name="name" required>
-						</div>
                         <div class="form-group">
-							<label>Phone</label>
-							<input type="text" class="form-control" name="phone" required>
-						</div>	
-						<div class="form-group">
-							<label>Email</label>
-							<input type="email" class="form-control" name="email" required>
-						</div>
-						<div class="form-group">
-							<label>Course</label>
-							<input type="text" class="form-control" name="course" required>
-						</div>
+                            <label>Course Name</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
                         <div class="form-group">
-							<label>Domain</label>
-							<input type="text" class="form-control" name="domain" required>
-						</div>
+                            <label>Duration</label>
+                            <input type="text" class="form-control" name="duration" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="date" class="form-control" name="start_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input type="date" class="form-control" name="end_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Venue Name</label>
+                            <input type="text" class="form-control" name="venue_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Trainees Enrolled</label>
+                            <input type="number" class="form-control" name="trainees_enrolled" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Faculty</label>
+                            <input type="text" class="form-control" name="faculty" required>
+                        </div>
 										
 					</div>
 					<div class="modal-footer">
@@ -373,37 +385,45 @@
 		</div>
 	</div>
 	<!-- edit Modal HTML -->
-	{%for i in trainee_obj%}
+	{%for i in courses_obj%}
 	<div id="editEmployeeModal-{{i.id}}" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form method="POST" action="/update_trainee/{{i.id}}">
+				<form method="POST" action="/update_courses/{{i.id}}">
 					{% csrf_token %}
 					<div class="modal-header">						
-						<h4 class="modal-title">Edit Trainee</h4>
+						<h4 class="modal-title">Edit Coursee</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					</div>
 					<div class="modal-body">					
-						<div class="form-group">
-							<label>Name</label>
-							<input value={{i.name}} type="text" class="form-control" name="name" required>
-						</div>
                         <div class="form-group">
-							<label>Phone</label>
-							<input value={{i.phone}} type="text" class="form-control" name="phone" required>
-						</div>	
-						<div class="form-group">
-							<label>Email</label>
-							<input value={{i.email}} type="email" class="form-control" name="email" required>
-						</div>
-						<div class="form-group">
-							<label>Course</label>
-							<input value={{i.course}} type="text" class="form-control" name="course" required>
-						</div>
+                            <label>Course Name</label>
+                            <input value={{i.name}} type="text" class="form-control" name="name" required>
+                        </div>
                         <div class="form-group">
-							<label>Domain</label>
-							<input value={{i.domain}} type="text" class="form-control" name="domain" required>
-						</div>					
+                            <label>Duration</label>
+                            <input  value={{i.duration}} type="text" class="form-control" name="duration" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input  value="{{ i.start_date|date:"Y-m-d" }}"  type="date" class="form-control" name="start_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input value="{{ i.end_date|date:"Y-m-d" }}" type="date" class="form-control" name="end_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Venue Name</label>
+                            <input value={{i.venue_name}} type="text" class="form-control" name="venue_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Trainees Enrolled</label>
+                            <input value={{i.trainees_enrolled}} type="number" class="form-control" name="trainees_enrolled" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Faculty</label>
+                            <input value={{i.faculty}} type="text" class="form-control" name="faculty" required>
+                        </div>					
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -415,14 +435,14 @@
 	</div>
 	{% endfor %}
 	<!-- Delete Modal HTML -->
-	{% for i in trainee_obj %}
+	{% for i in courses_obj %}
 	<div id="deleteEmployeeModal-{{i.id}}" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
 					{% csrf_token %}
 					<div class="modal-header">						
-						<h4 class="modal-title">Delete Trainee</h4>
+						<h4 class="modal-title">Delete Course</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					</div>
 					<div class="modal-body">					
@@ -431,7 +451,7 @@
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-						<a href="/delete_trainee/{{i.id}}" type="submit" class="btn btn-danger">Delete</a>
+						<a href="/delete_courses/{{i.id}}" type="submit" class="btn btn-danger">Delete</a>
 					</div>
 				</form>
 			</div>
@@ -439,7 +459,7 @@
 	</div>
 	{% endfor %}
 
-	<script src="../static/setsearch_trainee.js"></script>
+	<script src="../static/setsearch_courses.js"></script>
     <script>
         $(document).ready(function(){
             // Activate tooltip
@@ -467,3 +487,9 @@
     </script>
 </body>
 </html>
+
+
+
+
+	
+  
